@@ -1,6 +1,7 @@
 package com.kaayotee.fbaspotter.service;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.URL;
@@ -56,30 +57,19 @@ public class IpnHandler
 
             //2. Prepare 'notify-validate' command with exactly the same parameters
             Enumeration en = request.getParameterNames();
-            StringBuilder cmd = new StringBuilder("cmd=_notify-validate");
+            StringBuilder validationMsg = new StringBuilder("cmd=_notify-validate");
             String paramName;
             String paramValue;
             while (en.hasMoreElements()) {
                 paramName = (String) en.nextElement();
                 paramValue = request.getParameter(paramName);
-                cmd.append("&").append(paramName).append("=")
+                validationMsg.append("&").append(paramName).append("=")
                         .append(URLEncoder.encode(paramValue, request.getParameter("charset")));
             }
 
             //3. Post above command to Paypal IPN URL {@link IpnConfig#ipnUrl}
-            URL u = new URL(this.getIpnConfig().getIpnUrl());
-            HttpsURLConnection uc = (HttpsURLConnection) u.openConnection();
-            uc.setDoOutput(true);
-            uc.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            uc.setRequestProperty("Host", "www.paypal.com");
-            PrintWriter pw = new PrintWriter(uc.getOutputStream());
-            pw.println(cmd.toString());
-            pw.close();
+            String res = checkStatusOfPayPalMsg(validationMsg.toString());
 
-            //4. Read response from Paypal
-            BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
-            String res = in.readLine();
-            in.close();
 
             //5. Capture Paypal IPN information
             ipnInfo.setLogTime(System.currentTimeMillis());
@@ -107,6 +97,30 @@ public class IpnHandler
         //8. If all is well, return {@link IpnInfo} to the caller for further business logic execution
         return ipnInfo;
     }
+
+    private String checkStatusOfPayPalMsg(String validationMsg) {
+        String res = null;
+        try {
+            URL u = new URL(this.getIpnConfig().getIpnUrl());
+            HttpsURLConnection uc = (HttpsURLConnection) u.openConnection();
+            uc.setDoOutput(true);
+            uc.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            uc.setRequestProperty("Host", "www.paypal.com");
+            PrintWriter pw = new PrintWriter(uc.getOutputStream());
+            pw.println(validationMsg);
+            pw.close();
+
+            //4. Read response from Paypal
+            BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
+            res = in.readLine();
+            in.close();
+            LOGGER.info("Response back from paypal " + res);
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage());
+        }
+        return res;
+    }
+
 
     /**
      * Utility method to extract all request parameters and their values from request object

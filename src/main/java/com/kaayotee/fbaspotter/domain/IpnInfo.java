@@ -12,7 +12,6 @@ public class IpnInfo {
     private String payerEmail;
     private String response;
     private String requestParams;
-    private String error;
     private Long logTime;
 
     public String getItemName() {
@@ -103,14 +102,6 @@ public class IpnInfo {
         this.txnId = txnId;
     }
 
-    public String getError() {
-        return error;
-    }
-
-    public void setError(String error) {
-        this.error = error;
-    }
-
     @Override
     public String toString() {
         return "txn_id = " + this.getTxnId()
@@ -123,8 +114,7 @@ public class IpnInfo {
                 + ", payment_currency = " + this.getPaymentCurrency()
                 + ", receiver_email = " + this.getReceiverEmail()
                 + ", request_params = " + this.getRequestParams()
-                + ", log_time = " + this.getLogTime()
-                + ", error = " + this.getError();
+                + ", log_time = " + this.getLogTime();
     }
 
 }
