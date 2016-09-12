@@ -1,7 +1,3 @@
-/**
- * Paypal Button and Instant Payment Notification (IPN) Integration with Java
- * http://codeoftheday.blogspot.com/2013/07/paypal-button-and-instant-payment_6.html
- */
 package com.kaayotee.fbaspotter.service;
 
 import java.io.BufferedReader;
@@ -22,13 +18,6 @@ import org.springframework.stereotype.Component;
 import com.kaayotee.fbaspotter.domain.IpnInfo;
 import com.kaayotee.fbaspotter.exception.IpnException;
 
-/**
- * Paypal IPN Notification Handler Class
- *
- * User: smhumayun
- * Date: 7/6/13
- * Time: 5:48 PM
- */
 @Component
 public class IpnHandler
 {

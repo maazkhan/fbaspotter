@@ -1,16 +1,5 @@
-/**
- * Paypal Button and Instant Payment Notification (IPN) Integration with Java
- * http://codeoftheday.blogspot.com/2013/07/paypal-button-and-instant-payment_6.html
- */
 package com.kaayotee.fbaspotter.domain;
 
-/**
- * Model class to hold Paypal IPN Notification related information
- *
- * User: smhumayun
- * Date: 7/6/13
- * Time: 6:15 PM
- */
 public class IpnInfo {
 
     private String itemName;

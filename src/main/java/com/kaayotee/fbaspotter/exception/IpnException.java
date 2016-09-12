@@ -1,16 +1,5 @@
-/**
- * Paypal Button and Instant Payment Notification (IPN) Integration with Java
- * http://codeoftheday.blogspot.com/2013/07/paypal-button-and-instant-payment_6.html
- */
 package com.kaayotee.fbaspotter.exception;
 
-/**
- * Paypal IPN Notification Handler Exception
- *
- * User: smhumayun
- * Date: 7/6/13
- * Time: 6:51 PM
- */
 public class IpnException extends Exception {
 
     /**
