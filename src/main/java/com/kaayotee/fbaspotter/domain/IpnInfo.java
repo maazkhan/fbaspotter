@@ -2,41 +2,11 @@ package com.kaayotee.fbaspotter.domain;
 
 public class IpnInfo {
 
-    private String itemName;
-    private String itemNumber;
-    private String paymentStatus;
-    private String paymentAmount;
-    private String paymentCurrency;
-    private String txnId;
-    private String receiverEmail;
     private String payerEmail;
-    private String response;
-    private String requestParams;
-    private Long logTime;
-
-    public String getItemName() {
-        return itemName;
-    }
-
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
-
-    public String getItemNumber() {
-        return itemNumber;
-    }
-
-    public void setItemNumber(String itemNumber) {
-        this.itemNumber = itemNumber;
-    }
-
-    public Long getLogTime() {
-        return logTime;
-    }
-
-    public void setLogTime(Long logTime) {
-        this.logTime = logTime;
-    }
+    private String firstName;
+    private String lastName;
+    private String subscriptionName;
+    private String txnType;
 
     public String getPayerEmail() {
         return payerEmail;
@@ -46,75 +16,35 @@ public class IpnInfo {
         this.payerEmail = payerEmail;
     }
 
-    public String getPaymentAmount() {
-        return paymentAmount;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setPaymentAmount(String paymentAmount) {
-        this.paymentAmount = paymentAmount;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getPaymentCurrency() {
-        return paymentCurrency;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setPaymentCurrency(String paymentCurrency) {
-        this.paymentCurrency = paymentCurrency;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public String getPaymentStatus() {
-        return paymentStatus;
+    public String getSubscriptionName() {
+        return subscriptionName;
     }
 
-    public void setPaymentStatus(String paymentStatus) {
-        this.paymentStatus = paymentStatus;
+    public void setSubscriptionName(String subscriptionName) {
+        this.subscriptionName = subscriptionName;
     }
 
-    public String getReceiverEmail() {
-        return receiverEmail;
+    public String getTxnType() {
+        return txnType;
     }
 
-    public void setReceiverEmail(String receiverEmail) {
-        this.receiverEmail = receiverEmail;
+    public void setTxnType(String txnType) {
+        this.txnType = txnType;
     }
-
-    public String getRequestParams() {
-        return requestParams;
-    }
-
-    public void setRequestParams(String requestParams) {
-        this.requestParams = requestParams;
-    }
-
-    public String getResponse() {
-        return response;
-    }
-
-    public void setResponse(String response) {
-        this.response = response;
-    }
-
-    public String getTxnId() {
-        return txnId;
-    }
-
-    public void setTxnId(String txnId) {
-        this.txnId = txnId;
-    }
-
-    @Override
-    public String toString() {
-        return "txn_id = " + this.getTxnId()
-                + ", response = " + this.getResponse()
-                + ", payment_status = " + this.getPaymentStatus()
-                + ", payer_email = " + this.getPayerEmail()
-                + ", item_name = " + this.getItemName()
-                + ", item_number = " + this.getItemNumber()
-                + ", payment_amount = " + this.getPaymentAmount()
-                + ", payment_currency = " + this.getPaymentCurrency()
-                + ", receiver_email = " + this.getReceiverEmail()
-                + ", request_params = " + this.getRequestParams()
-                + ", log_time = " + this.getLogTime();
-    }
-
 }

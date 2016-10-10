@@ -14,18 +14,23 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.kaayotee.fbaspotter.domain.IpnInfo;
 import com.kaayotee.fbaspotter.exception.IpnException;
+import com.kaayotee.fbaspotter.json.Member;
+import com.kaayotee.fbaspotter.json.MergeFields;
 
-@Component
-public class IpnHandler
+@Service
+public class IpnHandlerService
 {
 
-    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(IpnHandler.class);
+    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(IpnHandlerService.class);
     private IpnConfig ipnConfig;
 
+    @Autowired
+    private MailChimpService mailChimpService;
     /**
      * This method handles the Paypal IPN Notification as follows:
      *      1. Read all posted request parameters
@@ -72,22 +77,28 @@ public class IpnHandler
 
 
             //5. Capture Paypal IPN information
-            ipnInfo.setLogTime(System.currentTimeMillis());
-            ipnInfo.setItemName(request.getParameter("item_name"));
-            ipnInfo.setItemNumber(request.getParameter("item_number"));
-            ipnInfo.setPaymentStatus(request.getParameter("payment_status"));
-            ipnInfo.setPaymentAmount(request.getParameter("mc_gross"));
-            ipnInfo.setPaymentCurrency(request.getParameter("mc_currency"));
-            ipnInfo.setTxnId(request.getParameter("txn_id"));
-            ipnInfo.setReceiverEmail(request.getParameter("receiver_email"));
+            ipnInfo.setFirstName(request.getParameter("first_name"));
+            ipnInfo.setLastName(request.getParameter("last_name"));
             ipnInfo.setPayerEmail(request.getParameter("payer_email"));
-            ipnInfo.setResponse(res);
-            ipnInfo.setRequestParams(requestParams);
+            ipnInfo.setSubscriptionName(request.getParameter("item_name"));
+            ipnInfo.setTxnType(request.getParameter("txn_type"));
+    
 
             //6. Validate captured Paypal IPN Information
-            if (res.equals("VERIFIED")) {
-
-                 }
+            if (res.equals("VERIFIED") && ipnInfo.getTxnType() != null) {
+                LOGGER.info("Verified from Paypal");
+                if (ipnInfo.getTxnType().equalsIgnoreCase("subscr_signup")) {
+                    LOGGER.info("Adding New Subscription");
+                    Member member = new Member();
+                    member.setEmailAddress(ipnInfo.getPayerEmail());
+                    member.setStatus("subscribed");
+                    MergeFields mergeFields = new MergeFields();
+                    mergeFields.setFNAME(ipnInfo.getFirstName());
+                    mergeFields.setLNAME(ipnInfo.getLastName());
+                    member.setMergeFields(mergeFields);
+                    mailChimpService.addMemberToList(ipnInfo.getSubscriptionName(), member);
+                }
+            }
         }
         catch(Exception e)
         {
@@ -140,7 +151,7 @@ public class IpnHandler
         for (Iterator it = map.keySet().iterator(); it.hasNext();)
         {
             String pn = (String)it.next();
-            sb.append(pn).append("\n");
+            //sb.append(pn).append("\n");
             String[] pvs = (String[]) map.get(pn);
             for (int i = 0; i < pvs.length; i++) {
                 String pv = pvs[i];

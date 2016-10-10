@@ -1,7 +1,7 @@
 package com.kaayotee.fbaspotter.service;
 
 import org.apache.tomcat.util.codec.binary.Base64;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -12,13 +12,13 @@ import org.springframework.web.client.RestTemplate;
 import com.kaayotee.fbaspotter.json.MailChimpList;
 import com.kaayotee.fbaspotter.json.MailChimpLists;
 import com.kaayotee.fbaspotter.json.Member;
-import com.kaayotee.fbaspotter.json.MergeFields;
 
 @Service
 public class MailChimpService {
 
-    private static RestTemplate restTemplate = new RestTemplate();;
-    private static String mailChimpApiUrl;
+    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(MailChimpService.class);
+    private RestTemplate restTemplate = new RestTemplate();;
+    private String mailChimpApiUrl;
 
     String plainCreds = "maaz:5a3910563094f2932dd151b1effaff38-us13";
     byte[] plainCredsBytes = plainCreds.getBytes();
@@ -26,13 +26,12 @@ public class MailChimpService {
     String base64Creds = new String(base64CredsBytes);
 
     HttpHeaders headers = new HttpHeaders();
-    private static HttpEntity<String> request;
+    private HttpEntity<String> request;
 
-    @Autowired
     public MailChimpService() {
-        mailChimpApiUrl = "http://us13.api.mailchimp.com/3.0";
-        headers.add("Authorization", "Basic " + base64Creds);
-        request = new HttpEntity<String>(headers);
+        this.mailChimpApiUrl = "http://us13.api.mailchimp.com/3.0";
+        this.headers.add("Authorization", "Basic " + base64Creds);
+        this.request = new HttpEntity<String>(headers);
     }
 
     public MailChimpLists getLists() {
@@ -48,31 +47,34 @@ public class MailChimpService {
     public MailChimpList getListByName(String listName) {
         MailChimpLists mailChimpLists = getLists();
         for (MailChimpList chimpList : mailChimpLists.getLists()) {
-            chimpList.getName().equalsIgnoreCase(listName);
-            return chimpList;
+            if (chimpList.getName().equalsIgnoreCase(listName)) {
+                return chimpList;
+            }
         }
         return null;
     }
 
-/*    public Member addMemberToList(String listName, Member member) {
+   public ResponseEntity addMemberToList(String listName, Member member) {
         MailChimpList mailChimpList = getListByName(listName);
         String url = mailChimpApiUrl + "/lists/" + mailChimpList.getId() + "/members";
-        //= restTemplate.exchange(url, HttpMethod.POST, request, Member.class);
-        ResponseEntity<Member> responseEntity = restTemplate.postForEntity(url, request, Member.class, member);
-        return responseEntity.getBody();
-    }*/
+        HttpEntity<Member> httpEntity = new HttpEntity<Member> (member, headers);
+        ResponseEntity<Member> responseEntity = restTemplate.exchange(url, HttpMethod.POST, httpEntity, Member.class);
+        LOGGER.info("Response from MailChimp: " + responseEntity.getStatusCode() + " " + responseEntity.getBody());
+        return responseEntity;
+    }
 
-    public static void main(String args[]) {
+/*    public static void main(String args[]) {
         MailChimpService mailChimpService = new MailChimpService();
         System.out.println("====" + mailChimpService.getLists().getLists().get(0).getName());
         System.out.println("====" + mailChimpService.getListById("6bad6a4b81").getDateCreated());
         System.out.println("====" + mailChimpService.getListByName("SubscriberDaily").getDateCreated());
         Member member = new Member();
         member.setEmailAddress("quraishihina6@gmail.com");
+        member.setStatus("subscribed");
         MergeFields mergeFields = new MergeFields();
         mergeFields.setFNAME("Hina");
         mergeFields.setLNAME("Quraishi");
         member.setMergeFields(mergeFields);
-        //System.out.println("====" + mailChimpService.addMemberToList("SubscriberDaily", member));
-    }
+        System.out.println("====" + mailChimpService.addMemberToList("SubscriberDaily", member));
+    }*/
 }
