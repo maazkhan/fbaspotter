@@ -258,6 +258,7 @@ body.page-navbar-fixed-top-sm {
 .content.has-bg .content-bg:before {
     content: '';
     background: url(../img/content-bg-cover.png);
+    opacity: 0.8;
     position: absolute;
     left: 0;
     right: 0;
