@@ -1,7 +1,10 @@
 
 package com.kaayotee.fbaspotter.json;
 
+import java.util.Map;
+
 import javax.annotation.Generated;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -20,7 +23,15 @@ public class Member {
     @JsonProperty("status")
     private String status;
     @JsonProperty("merge_fields")
-    private MergeFields mergeFields;
+    private Map<String, String> mergeFields;
+
+    public Map<String, String> getMergeFields() {
+        return mergeFields;
+    }
+
+    public void setMergeFields(Map<String, String> mergeFields) {
+        this.mergeFields = mergeFields;
+    }
 
     /**
      * 
@@ -62,24 +73,6 @@ public class Member {
         this.status = status;
     }
 
-    /**
-     * 
-     * @return
-     *     The mergeFields
-     */
-    @JsonProperty("merge_fields")
-    public MergeFields getMergeFields() {
-        return mergeFields;
-    }
 
-    /**
-     * 
-     * @param mergeFields
-     *     The merge_fields
-     */
-    @JsonProperty("merge_fields")
-    public void setMergeFields(MergeFields mergeFields) {
-        this.mergeFields = mergeFields;
-    }
 
 }

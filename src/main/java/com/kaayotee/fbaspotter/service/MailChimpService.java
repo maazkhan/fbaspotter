@@ -1,5 +1,8 @@
 package com.kaayotee.fbaspotter.service;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
@@ -12,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import com.kaayotee.fbaspotter.json.MailChimpList;
 import com.kaayotee.fbaspotter.json.MailChimpLists;
 import com.kaayotee.fbaspotter.json.Member;
+import com.kaayotee.fbaspotter.json.MergeFieldEntry;
 
 @Service
 public class MailChimpService {
@@ -20,6 +24,7 @@ public class MailChimpService {
     private RestTemplate restTemplate = new RestTemplate();;
     private String mailChimpApiUrl;
 
+    List<String> mergeListEntry;
     String plainCreds = "maaz:5a3910563094f2932dd151b1effaff38-us13";
     byte[] plainCredsBytes = plainCreds.getBytes();
     byte[] base64CredsBytes = Base64.encodeBase64(plainCredsBytes);
@@ -31,7 +36,8 @@ public class MailChimpService {
     public MailChimpService() {
         this.mailChimpApiUrl = "http://us13.api.mailchimp.com/3.0";
         this.headers.add("Authorization", "Basic " + base64Creds);
-        this.request = new HttpEntity<String>(headers);
+        this.request = new HttpEntity<>(headers);
+        this.mergeListEntry = Arrays.asList("payment_type","first_name", "last_name", "payment_date", "payer_email","subscr_date","txn_type", "item_name","payment_status","subscr_date");
     }
 
     public MailChimpLists getLists() {
@@ -54,6 +60,20 @@ public class MailChimpService {
         return null;
     }
 
+    public ResponseEntity addMergeFields(String listId, MergeFieldEntry mergeFieldEntry) {
+        String url = mailChimpApiUrl + "/lists/" + listId + "/merge-fields";
+
+        HttpEntity<MergeFieldEntry> httpEntity = new HttpEntity<MergeFieldEntry> (mergeFieldEntry, headers);
+        ResponseEntity<MergeFieldEntry> responseEntity = null;
+        try {
+            responseEntity = restTemplate.exchange(url, HttpMethod.POST, httpEntity, MergeFieldEntry.class);
+            LOGGER.info("Response from MailChimp: " + responseEntity.getStatusCode() + " " + responseEntity.getBody());
+        } catch (Exception e) {
+            LOGGER.info("Filed already added to list ");
+        }
+        return responseEntity;
+    }
+
    public ResponseEntity addMemberToList(String listName, Member member) {
         MailChimpList mailChimpList = getListByName(listName);
         String url = mailChimpApiUrl + "/lists/" + mailChimpList.getId() + "/members";
@@ -63,18 +83,37 @@ public class MailChimpService {
         return responseEntity;
     }
 
+    public ResponseEntity addMemberToList(String listName, Member member, String md5) {
+        MailChimpList mailChimpList = getListByName(listName);
+        String url = mailChimpApiUrl + "/lists/" + mailChimpList.getId() + "/members/" + md5;
+        HttpEntity<Member> httpEntity = new HttpEntity<Member> (member, headers);
+        ResponseEntity responseEntity = restTemplate.exchange(url, HttpMethod.PUT, httpEntity, Member.class);
+        LOGGER.info("Response from MailChimp: " + responseEntity.getStatusCode() + " " + responseEntity.getBody());
+        return responseEntity;
+    }
+
+
 /*    public static void main(String args[]) {
         MailChimpService mailChimpService = new MailChimpService();
         System.out.println("====" + mailChimpService.getLists().getLists().get(0).getName());
         System.out.println("====" + mailChimpService.getListById("6bad6a4b81").getDateCreated());
-        System.out.println("====" + mailChimpService.getListByName("SubscriberDaily").getDateCreated());
-        Member member = new Member();
+        System.out.println("====" + mailChimpService.getListByName("PayPal").getDateCreated());
+        *//*Member member = new Member();
         member.setEmailAddress("quraishihina6@gmail.com");
         member.setStatus("subscribed");
         MergeFields mergeFields = new MergeFields();
         mergeFields.setFNAME("Hina");
         mergeFields.setLNAME("Quraishi");
         member.setMergeFields(mergeFields);
-        System.out.println("====" + mailChimpService.addMemberToList("SubscriberDaily", member));
+        System.out.println("====" + mailChimpService.addMemberToList("SubscriberDaily", member));*//*
+
+        MailChimpList mailChimpList = mailChimpService.getListByName("PayPal");
+        MergeFieldEntry mergeFieldEntry = new MergeFieldEntry();
+        mergeFieldEntry.setTag("AWESOME");
+        mergeFieldEntry.setName("Awesome Address");
+        System.out.println("---> "+ mailChimpService.addMergeFields(mailChimpList.getId(), mergeFieldEntry));
     }*/
+
+
+
 }

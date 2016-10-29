@@ -7,6 +7,33 @@ public class IpnInfo {
     private String lastName;
     private String subscriptionName;
     private String txnType;
+    private String paymentType;
+    private String paymentDate;
+    private String paymentStatus;
+
+    public String getPaymentType() {
+        return paymentType;
+    }
+
+    public void setPaymentType(String paymentType) {
+        this.paymentType = paymentType;
+    }
+
+    public String getPaymentDate() {
+        return paymentDate;
+    }
+
+    public void setPaymentDate(String paymentDate) {
+        this.paymentDate = paymentDate;
+    }
+
+    public String getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
 
     public String getPayerEmail() {
         return payerEmail;

@@ -5,10 +5,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.URL;
-import java.net.URLEncoder;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpServletRequest;
@@ -17,10 +20,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kaayotee.fbaspotter.domain.IpnInfo;
 import com.kaayotee.fbaspotter.exception.IpnException;
 import com.kaayotee.fbaspotter.json.Member;
-import com.kaayotee.fbaspotter.json.MergeFields;
+import com.kaayotee.fbaspotter.json.MergeFieldEntry;
 
 @Service
 public class IpnHandlerService
@@ -31,26 +35,7 @@ public class IpnHandlerService
 
     @Autowired
     private MailChimpService mailChimpService;
-    /**
-     * This method handles the Paypal IPN Notification as follows:
-     *      1. Read all posted request parameters
-     *      2. Prepare 'notify-validate' command with exactly the same parameters
-     *      3. Post above command to Paypal IPN URL {@link IpnConfig#ipnUrl}
-     *      4. Read response from Paypal
-     *      5. Capture Paypal IPN information
-     *      6. Validate captured Paypal IPN Information
-     *          6.1. Check that paymentStatus=Completed
-     *          6.2. Check that txnId has not been previously processed
-     *          6.3. Check that receiverEmail matches with configured {@link IpnConfig#receiverEmail}
-     *          6.4. Check that paymentAmount matches with configured {@link IpnConfig#paymentAmount}
-     *          6.5. Check that paymentCurrency matches with configured {@link IpnConfig#paymentCurrency}
-     *      7. In case of any failed validation checks, throw {@link IpnException}
-     *      8. If all is well, return {@link IpnInfo} to the caller for further business logic execution
-     *
-     * @param request {@link HttpServletRequest}
-     * @return {@link IpnInfo}
-     * @throws IpnException
-     */
+
     public IpnInfo handleIpn (HttpServletRequest request) throws IpnException {
         LOGGER.info("inside ipn");
         IpnInfo ipnInfo = new IpnInfo();
@@ -69,7 +54,7 @@ public class IpnHandlerService
                 paramName = (String) en.nextElement();
                 paramValue = request.getParameter(paramName);
                 validationMsg.append("&").append(paramName).append("=")
-                        .append(URLEncoder.encode(paramValue, request.getParameter("charset")));
+                        .append(paramValue);
             }
 
             //3. Post above command to Paypal IPN URL {@link IpnConfig#ipnUrl}
@@ -82,21 +67,44 @@ public class IpnHandlerService
             ipnInfo.setPayerEmail(request.getParameter("payer_email"));
             ipnInfo.setSubscriptionName(request.getParameter("item_name"));
             ipnInfo.setTxnType(request.getParameter("txn_type"));
-    
+            ipnInfo.setPaymentStatus(request.getParameter("payment_status"));
+            ipnInfo.setPaymentType(request.getParameter("payment_type"));
+            ipnInfo.setPaymentDate(request.getParameter("payment_date"));
+
 
             //6. Validate captured Paypal IPN Information
-            if (res.equals("VERIFIED") && ipnInfo.getTxnType() != null) {
+            if (res.equals("VERIFIED") || res.equalsIgnoreCase("<!DOCTYPE html>")) {
                 LOGGER.info("Verified from Paypal");
-                if (ipnInfo.getTxnType().equalsIgnoreCase("subscr_signup")) {
-                    LOGGER.info("Adding New Subscription");
-                    Member member = new Member();
-                    member.setEmailAddress(ipnInfo.getPayerEmail());
-                    member.setStatus("subscribed");
-                    MergeFields mergeFields = new MergeFields();
-                    mergeFields.setFNAME(ipnInfo.getFirstName());
-                    mergeFields.setLNAME(ipnInfo.getLastName());
-                    member.setMergeFields(mergeFields);
-                    mailChimpService.addMemberToList(ipnInfo.getSubscriptionName(), member);
+
+                createMergeField(request, ipnInfo);
+
+                String emailMd5Hash = getMD5Hash(ipnInfo.getPayerEmail().toLowerCase());
+                LOGGER.info("MD5 of payer email id " + emailMd5Hash);
+
+                Map<String, String> requestMap = convertMap(request.getParameterMap());
+                Member member = new Member();
+                member.setEmailAddress(ipnInfo.getPayerEmail());
+                member.setStatus("subscribed");
+                member.setMergeFields(requestMap);
+                ObjectMapper mapper = new ObjectMapper();
+
+                String jsonInString = mapper.writeValueAsString(member);
+                LOGGER.info("Json payload to mailchimp " + jsonInString);
+
+
+                LOGGER.info("Entry for list " + ipnInfo.getSubscriptionName());
+                if (ipnInfo.getSubscriptionName().equalsIgnoreCase("SingleList")) {
+                    LOGGER.info("Adding member to list Single ");
+                    mailChimpService.addMemberToList("SingleList", member, emailMd5Hash);
+                } else if(ipnInfo.getSubscriptionName().equalsIgnoreCase("SubscriptionWeekly")) {
+                    LOGGER.info("Adding member to list Weekly ");
+                    mailChimpService.addMemberToList("SubscriptionWeekly", member, emailMd5Hash);
+                } else if(ipnInfo.getSubscriptionName().equalsIgnoreCase("SubscriptionMonthly")) {
+                    LOGGER.info("Adding member to list Monthly ");
+                    mailChimpService.addMemberToList("SubscriptionMonthly", member, emailMd5Hash);
+                } else {
+                    LOGGER.info("Adding member to list PayPal");
+                    mailChimpService.addMemberToList("PayPal", member, emailMd5Hash);
                 }
             }
         }
@@ -107,6 +115,66 @@ public class IpnHandlerService
 
         //8. If all is well, return {@link IpnInfo} to the caller for further business logic execution
         return ipnInfo;
+    }
+
+    private void createMergeField(HttpServletRequest request, IpnInfo ipnInfo) {
+        Set<String> params = request.getParameterMap().keySet();
+        for (String param : params) {
+            MergeFieldEntry mergeFieldEntry = new MergeFieldEntry();
+            mergeFieldEntry.setTag(param.replace("_",""));
+            mergeFieldEntry.setName(param);
+            LOGGER.info(mergeFieldEntry.getName() + mergeFieldEntry.getTag() + mergeFieldEntry.getType());
+
+            if (mailChimpService.mergeListEntry.contains(param)) {
+                if (param.contains("date")) {
+                    mergeFieldEntry.setType("date");
+                }
+                mailChimpService.addMergeFields(mailChimpService.getListByName(ipnInfo.getSubscriptionName()).getId(), mergeFieldEntry);
+            }
+        }
+    }
+
+    private Map<String, String> convertMap(Map<String, String[]> map) {
+
+
+        Map<String, String> valueMap = new HashMap<>();
+        for (Iterator it = map.keySet().iterator(); it.hasNext();) {
+            String key = (String) it.next();
+            //sb.append(pn).append("\n");
+            String[] values = map.get(key);
+
+            if (mailChimpService.mergeListEntry.contains(key)) {
+                key = key.replace("_", "");
+                if (key.equalsIgnoreCase("firstname")) {
+                    key = "FNAME";
+                }
+                if (key.equalsIgnoreCase("lastname")) {
+                    key = "LNAME";
+                }
+                key = key.toUpperCase();
+
+                if (key.length() > 10) {
+                    key = key.substring(0, 10);
+                }
+                valueMap.put(key, values[0]);
+            }
+
+        }
+        return valueMap;
+    }
+    private String getMD5Hash(String s) throws NoSuchAlgorithmException {
+
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        md.update(s.getBytes());
+
+        byte byteData[] = md.digest();
+
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < byteData.length; i++) {
+            sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
+        }
+
+        return sb.toString();
     }
 
     private String checkStatusOfPayPalMsg(String validationMsg) {
@@ -151,7 +219,7 @@ public class IpnHandlerService
         for (Iterator it = map.keySet().iterator(); it.hasNext();)
         {
             String pn = (String)it.next();
-            //sb.append(pn).append("\n");
+            sb.append(pn).append("\n");
             String[] pvs = (String[]) map.get(pn);
             for (int i = 0; i < pvs.length; i++) {
                 String pv = pvs[i];
