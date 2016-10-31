@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
 <!--[if !IE]><!-->
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <!--<![endif]-->
 <head>
 	<meta charset="utf-8" />
@@ -12,7 +12,8 @@
 	
 	<!-- ================== BEGIN BASE CSS STYLE ================== -->
 	<link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
-	<link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Special+Elite" rel="stylesheet">
+    <link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
 	<link href="assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
 	<link href="assets/css/animate.min.css" rel="stylesheet" />
 	<link href="assets/css/style.min.css" rel="stylesheet" />
@@ -85,247 +86,84 @@
             <!-- begin container -->
             <div class="container home-content">
                 <h1>Welcome to FBA Spotter</h1>
-                <h3>Your One Stop Source to FBA Finds</h3>
-                <p>
-                    We have created a multi-purpose theme that take the form of One-Page or Multi-Page Version.<br />
-                    Use our <a href="#">theme panel</a> to select your favorite theme color.
-                </p>
-                <a href="#" class="btn btn-theme">Explore More</a> <a href="#" class="btn btn-outline">Purchase Now</a><br />
+                 <h3> <span class="text-theme">Your One Stop Source to FBA Finds </span> </h3>
+
+                <a href="#service" class="btn btn-theme">Explore More</a> <a href="#pricing" class="btn btn-outline">Purchase Now</a><br />
                 <br />
-                or <a href="#">subscribe</a> newsletter
+                <h5>
+                or <a href="#">Subscribe to our FREE finds mailing List </a>
+                </h5>
             </div>
             <!-- end container -->
         </div>
         <!-- end #home -->
-        
-        <!-- begin #about -->
-        <div id="about" class="content" data-scrollview="true">
+
+        <!-- begin carousel -->
+        <div class="content bg-silver" data-scrollview="true">
             <!-- begin container -->
             <div class="container" data-animation="true" data-animation-type="fadeInDown">
-                <h2 class="content-title">About Us</h2>
-                <p class="content-desc">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum consectetur eros dolor,<br />
-                    sed bibendum turpis luctus eget
-                </p>
+                <h2 class="content-title">JumpStart Your Sales </h2>
+
                 <!-- begin row -->
                 <div class="row">
-                    <!-- begin col-4 -->
-                    <div class="col-md-4 col-sm-6">
-                        <!-- begin about -->
-                        <div class="about">
-                            <h3>Our Story</h3>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                                Vestibulum posuere augue eget ante porttitor fringilla. 
-                                Aliquam laoreet, sem eu dapibus congue, velit justo ullamcorper urna, 
-                                non rutrum dolor risus non sapien. Vivamus vel tincidunt quam. 
-                                Donec ultrices nisl ipsum, sed elementum ex dictum nec. 
-                            </p>
-                            <p>
-                                In non libero at orci rutrum viverra at ac felis. 
-                                Curabitur a efficitur libero, eu finibus quam. 
-                                Pellentesque pretium ante vitae est molestie, ut faucibus tortor commodo. 
-                                Donec gravida, eros ac pretium cursus, est erat dapibus quam, 
-                                sit amet dapibus nisl magna sit amet orci. 
-                            </p>
+                    <!-- begin col-6 -->
+                    <div class="col-md-6">
+                        <!-- 4:3 aspect ratio -->
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <img style="width: 100%; height: auto" src="assets/img/rsz_sales_final.png">
                         </div>
-                        <!-- end about -->
                     </div>
-                    <!-- end col-4 -->
-                    <!-- begin col-4 -->
-                    <div class="col-md-4 col-sm-6">
-                        <h3>Our Philosophy</h3>
-                        <!-- begin about-author -->
-                        <div class="about-author">
-                            <div class="quote bg-silver">
-                                <i class="fa fa-quote-left"></i>
-                                <h3>We work harder,<br /><span>to let our user keep simple</span></h3>
-                                <i class="fa fa-quote-right"></i>
-                            </div>
-                            <div class="author">
-                                <div class="image">
-                                    <img src="assets/img/user-1.jpg" alt="Sean Ngu" />
+                    <!-- end col-6 -->
+                    <!-- begin col-6 -->
+                    <div class="col-md-6">
+                        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                            <!-- Indicators -->
+                            <ol class="carousel-indicators">
+                                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                                <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                                <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                            </ol>
+
+                            <!-- Wrapper for slides -->
+                            <div class="carousel-inner">
+                                <div class="item active">
+                                    <img src="assets/img/carousel-1.jpg" alt="Carousel 1">
+                                    <div class="carousel-caption">
+                                        <h4 class="m-b-5">Caption Title 1</h4>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                    </div>
                                 </div>
-                                <div class="info">
-                                    Sean Ngu
-                                    <small>Front End Developer</small>
+                                <div class="item">
+                                    <img src="assets/img/carousel-2.jpg" alt="Carousel 2">
+                                    <div class="carousel-caption">
+                                        <h4 class="m-b-5">Caption Title 2</h4>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <img src="assets/img/carousel-3.jpg" alt="Carousel 3">
+                                    <div class="carousel-caption">
+                                        <h4 class="m-b-5">Caption Title 3</h4>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                    </div>
                                 </div>
                             </div>
+                            <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                                <i class="fa fa-chevron-left"></i>
+                            </a>
+                            <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                                <i class="fa fa-chevron-right"></i>
+                            </a>
                         </div>
-                        <!-- end about-author -->
                     </div>
-                    <!-- end col-4 -->
-                    <!-- begin col-4 -->
-                    <div class="col-md-4 col-sm-12">
-                        <h3>Our Experience</h3>
-                        <!-- begin skills -->
-                        <div class="skills">
-                            <div class="skills-name">Front End</div>
-                            <div class="progress progress-striped">
-                                <div class="progress-bar progress-bar-success" style="width: 95%">
-                                    <span class="progress-number">95%</span>
-                                </div>
-                            </div>
-                            <div class="skills-name">Programming</div>
-                            <div class="progress progress-striped">
-                                <div class="progress-bar progress-bar-success" style="width: 90%">
-                                    <span class="progress-number">90%</span>
-                                </div>
-                            </div>
-                            <div class="skills-name">Database Design</div>
-                            <div class="progress progress-striped">
-                                <div class="progress-bar progress-bar-success" style="width: 85%">
-                                    <span class="progress-number">85%</span>
-                                </div>
-                            </div>
-                            <div class="skills-name">Wordpress</div>
-                            <div class="progress progress-striped">
-                                <div class="progress-bar progress-bar-success" style="width: 80%">
-                                    <span class="progress-number">80%</span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- end skills -->
-                    </div>
-                    <!-- end col-4 -->
+                    <!-- end col-6 -->
                 </div>
                 <!-- end row -->
             </div>
             <!-- end container -->
         </div>
-        <!-- end #about -->
-    
-        <!-- begin #milestone -->
-        <div id="milestone" class="content bg-black-darker has-bg" data-scrollview="true">
-            <!-- begin content-bg -->
-            <div class="content-bg">
-                <img src="assets/img/milestone-bg.jpg" alt="Milestone" />
-            </div>
-            <!-- end content-bg -->
-            <!-- begin container -->
-            <div class="container">
-                <!-- begin row -->
-                <div class="row">
-                    <!-- begin col-3 -->
-                    <div class="col-md-3 col-sm-3 milestone-col">
-                        <div class="milestone">
-                            <div class="number" data-animation="true" data-animation-type="number" data-final-number="1292">1,292</div>
-                            <div class="title">Themes & Template</div>
-                        </div>
-                    </div>
-                    <!-- end col-3 -->
-                    <!-- begin col-3 -->
-                    <div class="col-md-3 col-sm-3 milestone-col">
-                        <div class="milestone">
-                            <div class="number" data-animation="true" data-animation-type="number" data-final-number="9039">9,039</div>
-                            <div class="title">Registered Members</div>
-                        </div>
-                    </div>
-                    <!-- end col-3 -->
-                    <!-- begin col-3 -->
-                    <div class="col-md-3 col-sm-3 milestone-col">
-                        <div class="milestone">
-                            <div class="number" data-animation="true" data-animation-type="number" data-final-number="89291">89,291</div>
-                            <div class="title">Items Sold</div>
-                        </div>
-                    </div>
-                    <!-- end col-3 -->
-                    <!-- begin col-3 -->
-                    <div class="col-md-3 col-sm-3 milestone-col">
-                        <div class="milestone">
-                            <div class="number" data-animation="true" data-animation-type="number" data-final-number="129">129</div>
-                            <div class="title">Theme Authors</div>
-                        </div>
-                    </div>
-                    <!-- end col-3 -->
-                </div>
-                <!-- end row -->
-            </div>
-            <!-- end container -->
-        </div>
-        <!-- end #milestone -->
-        
-        <!-- begin #team -->
-        <div id="team" class="content" data-scrollview="true">
-            <!-- begin container -->
-            <div class="container">
-                <h2 class="content-title">Our Team</h2>
-                <p class="content-desc">
-                    Phasellus suscipit nisi hendrerit metus pharetra dignissim. Nullam nunc ante, viverra quis<br /> 
-                    ex non, porttitor iaculis nisi.
-                </p>
-                <!-- begin row -->
-                <div class="row">
-                    <!-- begin col-4 -->
-                    <div class="col-md-4 col-sm-4">
-                        <!-- begin team -->
-                        <div class="team">             
-                            <div class="image" data-animation="true" data-animation-type="flipInX">
-                                <img src="assets/img/user-1.jpg" alt="Ryan Teller" />
-                            </div>
-                            <div class="info">
-                                <h3 class="name">Ryan Teller</h3>
-                                <div class="title text-theme">FOUNDER</div>
-                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.</p>
-                                <div class="social">
-                                    <a href="#"><i class="fa fa-facebook fa-lg fa-fw"></i></a>
-                                    <a href="#"><i class="fa fa-twitter fa-lg fa-fw"></i></a>
-                                    <a href="#"><i class="fa fa-google-plus fa-lg fa-fw"></i></a>
-                                </div>
-                            </div>                     
-                        </div>
-                        <!-- end team -->
-                    </div>
-                    <!-- end col-4 -->
-                    <!-- begin col-4 -->
-                    <div class="col-md-4 col-sm-4">
-                        <!-- begin team -->
-                        <div class="team">             
-                            <div class="image" data-animation="true" data-animation-type="flipInX">
-                                <img src="assets/img/user-2.jpg" alt="Jonny Cash" />
-                            </div>
-                            <div class="info">
-                                <h3 class="name">Johnny Cash</h3>
-                                <div class="title text-theme">WEB DEVELOPER</div>
-                                <p>Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>
-                                <div class="social">
-                                    <a href="#"><i class="fa fa-facebook fa-lg fa-fw"></i></a>
-                                    <a href="#"><i class="fa fa-twitter fa-lg fa-fw"></i></a>
-                                    <a href="#"><i class="fa fa-google-plus fa-lg fa-fw"></i></a>
-                                </div>
-                            </div>                     
-                        </div>
-                        <!-- end team -->
-                    </div>
-                    <!-- end col-4 -->
-                    <!-- begin col-4 -->
-                    <div class="col-md-4 col-sm-4">
-                        <!-- begin team -->
-                        <div class="team">             
-                            <div class="image" data-animation="true" data-animation-type="flipInX">
-                                <img src="assets/img/user-3.jpg" alt="Mia Donovan" />
-                            </div>
-                            <div class="info">
-                                <h3 class="name">Mia Donovan</h3>
-                                <div class="title text-theme">WEB DESIGNER</div>
-                                <p>Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. </p>
-                                <div class="social">
-                                    <a href="#"><i class="fa fa-facebook fa-lg fa-fw"></i></a>
-                                    <a href="#"><i class="fa fa-twitter fa-lg fa-fw"></i></a>
-                                    <a href="#"><i class="fa fa-google-plus fa-lg fa-fw"></i></a>
-                                </div>
-                            </div>                     
-                        </div>
-                        <!-- end team -->
-                    </div>
-                    <!-- end col-4 -->
-                </div>
-                <!-- end row -->
-            </div>
-            <!-- end container -->
-        </div>
-        <!-- end #team -->
-        
+        <!-- end carousel -->
+
         <!-- begin #quote -->
         <div id="quote" class="content bg-black-darker has-bg" data-scrollview="true">
             <!-- begin content-bg -->
@@ -339,10 +177,9 @@
                 <div class="row">
                     <!-- begin col-12 -->
                     <div class="col-md-12 quote">
-                        <i class="fa fa-quote-left"></i> Passion leads to design, design leads to performance, <br />
-                        performance leads to <span class="text-theme">success</span>!  
+                        <i class="fa fa-quote-left"></i> Stop wasting hours finding the right products. Let us do the crazy hours, focus on your FBA business and see you profits <span class="text-theme">skyrocketing!</span>
                         <i class="fa fa-quote-right"></i>
-                        <small>Sean Themes, Developer Teams in Malaysia</small>
+                        <small>FBA Spotting Cats</small>
                     </div>
                     <!-- end col-12 -->
                 </div>
@@ -351,15 +188,14 @@
             <!-- end container -->
         </div>
         <!-- end #quote -->
-        
+
         <!-- beign #service -->
         <div id="service" class="content" data-scrollview="true">
             <!-- begin container -->
             <div class="container">
                 <h2 class="content-title">Our Services</h2>
                 <p class="content-desc">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum consectetur eros dolor,<br />
-                    sed bibendum turpis luctus eget
+                    Stop wasting hours finding the right products. Let us do the crazy hours, concentrate on your FBA business and see you profits skyrocketing!
                 </p>
                 <!-- begin row -->
                 <div class="row">
@@ -438,7 +274,160 @@
             </div>
             <!-- end container -->
         </div>
+        <!-- end #service -->
+
+
+    
+        <!-- begin #milestone -->
+        <div id="milestone" class="content bg-black-darker has-bg" data-scrollview="true">
+            <!-- begin content-bg -->
+            <div class="content-bg">
+                <img src="assets/img/milestone-bg.jpg" alt="Milestone" />
+            </div>
+            <!-- end content-bg -->
+            <!-- begin container -->
+            <div class="container">
+                <!-- begin row -->
+                <div class="row">
+                    <!-- begin col-3 -->
+                    <div class="col-md-3 col-sm-3 milestone-col">
+                        <div class="milestone">
+                            <div class="number" data-animation="true" data-animation-type="number" data-final-number="1292">1,292</div>
+                            <div class="title">Themes & Template</div>
+                        </div>
+                    </div>
+                    <!-- end col-3 -->
+                    <!-- begin col-3 -->
+                    <div class="col-md-3 col-sm-3 milestone-col">
+                        <div class="milestone">
+                            <div class="number" data-animation="true" data-animation-type="number" data-final-number="9039">9,039</div>
+                            <div class="title">Registered Members</div>
+                        </div>
+                    </div>
+                    <!-- end col-3 -->
+                    <!-- begin col-3 -->
+                    <div class="col-md-3 col-sm-3 milestone-col">
+                        <div class="milestone">
+                            <div class="number" data-animation="true" data-animation-type="number" data-final-number="89291">89,291</div>
+                            <div class="title">Items Sold</div>
+                        </div>
+                    </div>
+                    <!-- end col-3 -->
+                    <!-- begin col-3 -->
+                    <div class="col-md-3 col-sm-3 milestone-col">
+                        <div class="milestone">
+                            <div class="number" data-animation="true" data-animation-type="number" data-final-number="129">129</div>
+                            <div class="title">Theme Authors</div>
+                        </div>
+                    </div>
+                    <!-- end col-3 -->
+                </div>
+                <!-- end row -->
+            </div>
+            <!-- end container -->
+        </div>
+        <!-- end #milestone -->
+
+
+
+        <!-- begin #about -->
+        <div id="about" class="content" data-scrollview="true">
+            <!-- begin container -->
+            <div class="container" data-animation="true" data-animation-type="fadeInDown">
+                <h2 class="content-title">About Us</h2>
+                <p class="content-desc">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum consectetur eros dolor,<br />
+                    sed bibendum turpis luctus eget
+                </p>
+                <!-- begin row -->
+                <div class="row">
+                    <!-- begin col-4 -->
+                    <div class="col-md-4 col-sm-6">
+                        <!-- begin about -->
+                        <div class="about">
+                            <h3>Our Story</h3>
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                Vestibulum posuere augue eget ante porttitor fringilla.
+                                Aliquam laoreet, sem eu dapibus congue, velit justo ullamcorper urna,
+                                non rutrum dolor risus non sapien. Vivamus vel tincidunt quam.
+                                Donec ultrices nisl ipsum, sed elementum ex dictum nec.
+                            </p>
+                            <p>
+                                In non libero at orci rutrum viverra at ac felis.
+                                Curabitur a efficitur libero, eu finibus quam.
+                                Pellentesque pretium ante vitae est molestie, ut faucibus tortor commodo.
+                                Donec gravida, eros ac pretium cursus, est erat dapibus quam,
+                                sit amet dapibus nisl magna sit amet orci.
+                            </p>
+                        </div>
+                        <!-- end about -->
+                    </div>
+                    <!-- end col-4 -->
+                    <!-- begin col-4 -->
+                    <div class="col-md-4 col-sm-6">
+                        <h3>Our Philosophy</h3>
+                        <!-- begin about-author -->
+                        <div class="about-author">
+                            <div class="quote bg-silver">
+                                <i class="fa fa-quote-left"></i>
+                                <h3>We work harder,<br /><span>to let our user keep simple</span></h3>
+                                <i class="fa fa-quote-right"></i>
+                            </div>
+                            <div class="author">
+                                <div class="image">
+                                    <img src="assets/img/user-1.jpg" alt="Sean Ngu" />
+                                </div>
+                                <div class="info">
+                                    Sean Ngu
+                                    <small>Front End Developer</small>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end about-author -->
+                    </div>
+                    <!-- end col-4 -->
+                    <!-- begin col-4 -->
+                    <div class="col-md-4 col-sm-12">
+                        <h3>Our Experience</h3>
+                        <!-- begin skills -->
+                        <div class="skills">
+                            <div class="skills-name">Front End</div>
+                            <div class="progress progress-striped">
+                                <div class="progress-bar progress-bar-success" style="width: 95%">
+                                    <span class="progress-number">95%</span>
+                                </div>
+                            </div>
+                            <div class="skills-name">Programming</div>
+                            <div class="progress progress-striped">
+                                <div class="progress-bar progress-bar-success" style="width: 90%">
+                                    <span class="progress-number">90%</span>
+                                </div>
+                            </div>
+                            <div class="skills-name">Database Design</div>
+                            <div class="progress progress-striped">
+                                <div class="progress-bar progress-bar-success" style="width: 85%">
+                                    <span class="progress-number">85%</span>
+                                </div>
+                            </div>
+                            <div class="skills-name">Wordpress</div>
+                            <div class="progress progress-striped">
+                                <div class="progress-bar progress-bar-success" style="width: 80%">
+                                    <span class="progress-number">80%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end skills -->
+                    </div>
+                    <!-- end col-4 -->
+                </div>
+                <!-- end row -->
+            </div>
+            <!-- end container -->
+        </div>
         <!-- end #about -->
+        
+
         
         <!-- beign #action-box -->
         <div id="action-box" class="content has-bg" data-scrollview="true">
