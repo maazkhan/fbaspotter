@@ -92,9 +92,13 @@ body.page-navbar-fixed-top-sm {
 }
 .rebrand-logo {
     float: left;
-    margin-right: 5px;
-    margin-top: -1px;
+    margin-top: -15px;
     font-size: 25px
+}
+
+.rebrand-logo + .img {
+   height: 10px;
+    width: 10px
 }
 
 .brand-logo {
